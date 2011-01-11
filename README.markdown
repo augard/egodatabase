@@ -25,9 +25,38 @@ Check out each header file for a complete listing of each method.
 		NSLog(@"Views: %d", [row intForColumn:@"post_views"]);
 		NSLog(@"Message: %@", [row stringForColumn:@"post_message"]);
 	}
+
+# Migration from FMDB
+
+    NSString *qry = [NSString stringWithFormat:@"SELECT * FROM customers"];
+    FMResultSet *rs = [database executeQuery:qry];
 	
+    while([rs next]) {
+        NSLog(@"%@",[rs stringForColumn:@"name"]);
+     }
+    [rs close];
+	
+     EGODatabaseResult *result = [database executeQuery:qry];
+     for(EGODatabaseRow *row in result)
+     {
+        NNSLog(@"%@",[rs stringForColumn:@"name"]);
+     }
+	// don't need to close recordset
+	
+	
+	FMResultSet *rs = [database executeQuery:@"SELECT * FROM customers WHERE name =? ",name,nil];
+	->
+	EGODatabaseResult *result = [database executeQueryWithParameters:@"SELECT * FROM customers WHERE name =? ",name,nil];
+	
+	
+#tips
+     add this #define NUMBER(I)	[NSNumber numberWithInt:I]
+	 [NSNumber numberWithInt:10] can be shortened to NUMBER(10)
+	
+
 # Note
 Remember to link libsqlite3.dylib to your project!
+
 
 # Questions
 Feel free to contact info@enormego.com if you need any help with EGODatabase.
