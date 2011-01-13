@@ -137,7 +137,6 @@ valistArray;\
 - (void)close {
 	if(!handle) return;
 	sqlite3_close(handle);
-	handle = 0;
 	opened = NO;
 }
 
@@ -211,13 +210,14 @@ valistArray;\
 
 - (sqlite3_int64)last_insert_rowid
 {
-	if (handle) {
-		return sqlite3_last_insert_rowid(handle);
-	} else {
-		EGODBDebugLog(@"[EGODatabase] Can't get last rowid of nil sqlite");
-		return 0;
-	}
+  if (handle) {
+     return sqlite3_last_insert_rowid(handle);
+  } else {
+    EGODBDebugLog(@"[EGODatabase] Can't get last rowid of nil sqlite");
+    return 0;
+  }
 }
+
 
 - (EGODatabaseResult*)executeQueryWithParameters:(NSString*)sql,... {
 	return [self executeQuery:sql parameters:VAToArray(sql)];
@@ -288,11 +288,7 @@ valistArray;\
 	while(sqlite3_step(statement) == SQLITE_ROW) {
 		EGODatabaseRow* row = [[EGODatabaseRow alloc] initWithDatabaseResult:result];
 		for(x=0;x<columnCount;x++) {
-			if (SQLITE_BLOB == sqlite3_column_type(statement, x)) {
-				[row.columnData addObject:[NSData
-					dataWithBytes:sqlite3_column_text(statement,x)
-					length:sqlite3_column_bytes(statement,x)]];
-			} else if (sqlite3_column_text(statement,x) != NULL) {
+			if(sqlite3_column_text(statement,x) != NULL) {
 				[row.columnData addObject:[[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement,x)] autorelease]];
 			} else {
 				[row.columnData addObject:@""];
@@ -318,6 +314,48 @@ valistArray;\
 		return nil;
 	}
 }
+
+// Transaction helpers
+
+- (BOOL)rollback {
+    BOOL b = [self executeUpdate:@"ROLLBACK TRANSACTION;"];
+    if (b) {
+        inTransaction = NO;
+    }
+    return b;
+}
+
+- (BOOL)commit {
+    BOOL b =  [self executeUpdate:@"COMMIT TRANSACTION;"];
+    if (b) {
+        inTransaction = NO;
+    }
+    return b;
+}
+
+- (BOOL)beginDeferredTransaction {
+    BOOL b =  [self executeUpdate:@"BEGIN DEFERRED TRANSACTION;"];
+    if (b) {
+        inTransaction = YES;
+    }
+    return b;
+}
+
+- (BOOL)beginTransaction {
+    BOOL b =  [self executeUpdate:@"BEGIN EXCLUSIVE TRANSACTION;"];
+    if (b) {
+        inTransaction = YES;
+    }
+    return b;
+}
+
+- (BOOL)inTransaction {
+    return inTransaction;
+}
+- (void)setInTransaction:(BOOL)flag {
+    inTransaction = flag;
+}
+
 
 - (BOOL)hadError {
 	return [self lastErrorCode] != SQLITE_OK;

@@ -35,6 +35,7 @@
 @protected
 	NSString* databasePath;
 	NSLock* executeLock;
+	BOOL    inTransaction;
 	
 @private
 	sqlite3* handle;
@@ -55,7 +56,7 @@
 
 - (sqlite3_int64)last_insert_rowid;
 
-// Execute Query
+// // Execute Query
 - (EGODatabaseResult*)executeQueryWithParameters:(NSString*)sql, ... NS_REQUIRES_NIL_TERMINATION;
 
 - (EGODatabaseResult*)executeQuery:(NSString*)sql;
@@ -75,11 +76,25 @@
 - (EGODatabaseRequest*)requestWithUpdate:(NSString*)sql;
 - (EGODatabaseRequest*)requestWithUpdate:(NSString*)sql parameters:(NSArray*)parameters;
 
+// Transaction helpers
+
+- (BOOL)rollback;
+- (BOOL)commit;
+- (BOOL)beginTransaction;
+- (BOOL)beginDeferredTransaction;
+- (BOOL)inTransaction;
+- (void)setInTransaction:(BOOL)flag;
+
 // Error methods
 
 - (NSString*)lastErrorMessage;
 - (BOOL)hadError;
 - (int)lastErrorCode;
+
+
+
+
+
 
 @property(nonatomic,readonly) sqlite3* sqliteHandle;
 @end
