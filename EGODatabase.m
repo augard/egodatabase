@@ -33,15 +33,21 @@
  *
  * @see http://code.google.com/p/flycode/soureturnCodee/browse/#svn/trunk/fmdb
  */
-
+#define WARNING_MSG "FATAL: object is not an NSObject subclass. Are you using int? use [NSNumber numberWithInt:1] \n"
 #define VAToArray(firstarg) ({\
 NSMutableArray* valistArray = [NSMutableArray array];\
 id obj = nil;\
 va_list arguments;\
 va_start(arguments, sql);\
+@try { \
 while ((obj = va_arg(arguments, id))) {\
-	[valistArray addObject:obj];\
+if([obj isKindOfClass:[NSObject class]]) [valistArray addObject:obj];\
+else printf(WARNING_MSG); \
 }\
+}   \
+@catch(NSException *exception){ \
+ printf(WARNING_MSG); \
+} \
 va_end(arguments);\
 valistArray;\
 })
@@ -50,20 +56,7 @@ valistArray;\
 
 #import "EGODatabase.h"
 
-#define EGODatabaseDebugLog 1
-#define EGODatabaseLockLog 0
 
-#if EGODatabaseDebugLog
-#define EGODBDebugLog(s,...) NSLog(s, ##__VA_ARGS__)
-#else
-#define EGODBDebugLog(s,...)
-#endif
-
-#if EGODatabaseLockLog
-#define EGODBLockLog(s,...) NSLog(s, ##__VA_ARGS__)
-#else
-#define EGODBLockLog(s,...)
-#endif
 
 @interface EGODatabase (Private)
 - (BOOL)bindStatement:(sqlite3_stmt*)statement toParameters:(NSArray*)parameters;
@@ -103,6 +96,8 @@ valistArray;\
 	return request;
 }
 
+
+
 - (EGODatabaseRequest*)requestWithUpdateAndParameters:(NSString*)sql, ... {
 	return [self requestWithUpdate:sql parameters:VAToArray(sql)];
 }
@@ -120,7 +115,14 @@ valistArray;\
 	return request;
 }
 
+/*- (void)test:(NSString*)sql,... {
+	
+	NSLog(@"VAToArray :%@",VAToArray(sql));
+}*/
 - (BOOL)open {
+	
+	
+	//[self test:@"str",2,nil];
 	if(opened) return YES;
 	
 	int err = sqlite3_open([databasePath fileSystemRepresentation], &handle);

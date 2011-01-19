@@ -31,6 +31,21 @@
 #import <sqlite3.h>
 
 
+#define EGODatabaseDebugLog 1
+#define EGODatabaseLockLog 0
+
+#if EGODatabaseDebugLog
+#define EGODBDebugLog(s,...) NSLog(s, ##__VA_ARGS__)
+#else
+#define EGODBDebugLog(s,...)
+#endif
+
+#if EGODatabaseLockLog
+#define EGODBLockLog(s,...) NSLog(s, ##__VA_ARGS__)
+#else
+#define EGODBLockLog(s,...)
+#endif
+
 @interface EGODatabase : NSObject {
 @protected
 	NSString* databasePath;
