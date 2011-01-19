@@ -49,7 +49,18 @@
 	
 	return self;
 }
+- (void)fire {
+	if(self.delegate == nil){
+		EGODBDebugLog(@"[EGODatabase] FATAL: please specify the callback delegate");
+		return;
+	}
+	if(self.database == nil){
+		EGODBDebugLog(@"[EGODatabase] FATAL: please specify the database");
+		return;
+	}
 
+	[self main];
+}
 - (void)main {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	[delegate retain];

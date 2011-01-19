@@ -47,7 +47,57 @@ Check out each header file for a complete listing of each method.
 	FMResultSet *rs = [database executeQuery:@"SELECT * FROM customers WHERE name =? ",name,nil];
 	->
 	EGODatabaseResult *result = [database executeQueryWithParameters:@"SELECT * FROM customers WHERE name =? ",name,nil];
+
+#EGODatabaseRequest - asynchronous requests to db 
 	
+	1) Implement the EGODatabaseRequestDelegate protocol
+    Eg.   DataEnvironment : NSObject<EGODatabaseRequestDelegate> 
+
+	2)	Add the requestDidSucceed /requestDidFail callback methods.
+		
+		
+		-(void)requestDidSucceed:(EGODatabaseRequest*)request withResult:(EGODatabaseResult*)result
+			if (request.tag == GETFRIENDS){
+			     for(EGODatabaseRow *row in result)
+			     {
+			        NNSLog(@"%@",[rs stringForColumn:@"name"]);
+			     }
+			}
+		}
+
+		-(void)requestDidFail:(EGODatabaseRequest*)request withError:(NSError*)error{
+
+			NSLog(@"WARNING requestDidFail");
+		}
+
+    3) 
+	Create the requests / configure the delegate / database / add tags  
+	finally issue the "fire" method.
+	
+	
+	EGODatabaseRequest* request = [[EGODatabaseRequest alloc] initWithQuery:qry parameters:nil];
+	request.delegate = self;
+	request.database = appDelegate.database;
+	request.tag = GETFRIENDS;
+	request.requestKind = EGODatabaseSelectRequest;
+	[request fire];
+	[request release];
+
+
+
+#transaction helper methods
+
+BOOL bBegin = [database beginTransaction];
+if(bBegin){
+	[database executeQueryWithParameters:@"INSERT INTO customer (name) VALUES (?);","BobbyRay",nil];
+	[database executeQueryWithParameters:@"INSERT INTO customer (name) VALUES (?);","BillyJean",nil];
+	[database executeQueryWithParameters:@"INSERT INTO customer (name) VALUES (?);","MaryJane",nil];
+	
+}	
+BOOL bBegin [database commit];
+
+or if need be you can 
+[database rollBack];
 	
 #tips
      add this #define NUMBER(I)	[NSNumber numberWithInt:I]
