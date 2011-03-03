@@ -100,9 +100,37 @@ or if need be you can
 [database rollBack];
 	
 #tips
-     add this #define NUMBER(I)	[NSNumber numberWithInt:I]
+ 1)    add this #define NUMBER(I)	[NSNumber numberWithInt:I]
 	 [NSNumber numberWithInt:10] can be shortened to NUMBER(10)
 	
+ 2)	add this to a common include file (substitute AppDelegate for the name of your app delegate)
+	#define GET_DB()	(EGODatabase *)[(AppDelegate *)[[UIApplication sharedApplication] delegate] userdb]
+	
+	add this protocol to your AppDelegate in the header file above the interface.
+	@protocol AppDelegate
+		@property (nonatomic, retain) EGODatabase *userdb;
+	@end
+	
+	now you can call GET_DB() from any file. 
+	[GET_DB() executeQuery:@"SELECT * FROM CUSTOMERS"];
+	
+	
+	
+	
+#Frequently Encountered Problems
+  [EGODatabase] Invalid bind cound for number of arguments.
+	You are likely passing in an int or nil values!!!! You must use NSString / NSNumber
+	
+	
+	int i;
+	for (i=0; i<[DATAENV.feelings count]; i++) {
+
+		EGODatabaseResult *result = [self.appDelegate.userdb executeQueryWithParameters:@"SELECT tag_id FROM taggings WHERE  tag_id= ?",i,nil]; // FAIL
+    }
+
+	EGODatabaseResult *result = [self.appDelegate.userdb executeQueryWithParameters:@"SELECT tag_id FROM taggings WHERE  tag_id= ?",NUMBER(i),nil];
+
+
 
 # Note
 Remember to link libsqlite3.dylib to your project!
