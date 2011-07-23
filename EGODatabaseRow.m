@@ -58,11 +58,11 @@
 - (long)longForColumn:(NSString*)columnName {
     int columnIndex = [self columnIndexForName:columnName];
 	if(columnIndex < 0 || columnIndex == NSNotFound) return 0;
-    return [[columnData objectAtIndex:columnIndex] longValue];
+    return (long)[[columnData objectAtIndex:columnIndex] longLongValue];
 }
 
 - (long)longForColumnIndex:(int)columnIndex {
-    return [[columnData objectAtIndex:columnIndex] longValue];
+    return (long)[[columnData objectAtIndex:columnIndex] longLongValue];
 }
 
 - (BOOL)boolForColumn:(NSString*)columnName {
