@@ -34,7 +34,7 @@
 
 
 @implementation EGODatabaseRequest
-@synthesize requestKind, database, delegate, tag;
+@synthesize requestKind, database, delegate, block, tag;
 
 - (id)initWithQuery:(NSString*)aQuery {
 	return [self initWithQuery:aQuery parameters:nil];
@@ -109,18 +109,27 @@
 }
 
 - (void)didSucceedWithResult:(EGODatabaseResult*)result {
+    if (self.block.successBlock) {
+        self.block.successBlock(result);
+    }
+    
 	if(delegate && [delegate respondsToSelector:@selector(requestDidSucceed:withResult:)]) {
 		[delegate requestDidSucceed:self withResult:result];
 	}
 }
 
 - (void)didFailWithError:(NSError*)error {
+    if (self.block.errorBlock) {
+        self.block.errorBlock(error);
+    }
+    
 	if(delegate && [delegate respondsToSelector:@selector(requestDidFail:withError:)]) {
 		[delegate requestDidFail:self withError:error];
 	}
 }
 
 - (void)dealloc {
+    self.block = nil;
 	[parameters release];
 	[database release];
 	[super dealloc];

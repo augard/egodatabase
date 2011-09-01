@@ -30,6 +30,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EGODatabaseRequestBlock.h"
 
 typedef enum {
 	EGODatabaseUpdateRequest,
@@ -56,6 +57,7 @@ typedef enum {
 @property(nonatomic,retain) EGODatabase* database;
 @property(nonatomic,assign) EGODatabaseRequestKind requestKind;
 @property(nonatomic,assign) id<EGODatabaseRequestDelegate> delegate;
+@property(nonatomic,retain) EGODatabaseRequestBlock* block;
 @end
 
 @protocol EGODatabaseRequestDelegate<NSObject>
