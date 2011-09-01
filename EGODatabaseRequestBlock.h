@@ -8,7 +8,7 @@
 #import "EGODatabaseResult.h"
 
 @protocol OperationCallback <NSObject>
-+ (id)callbackWithSuccess:(id)success error:(id)error;
++ (id)blockWithSuccess:(id)success error:(id)error;
 @end
 
 @interface OperationCallback : NSObject <OperationCallback> {
@@ -26,7 +26,7 @@ typedef void (^RequestErrorBlock)(NSError *error);
 
 @protocol EGODatabaseRequestBlock <NSObject>
 @optional
-+ (id)callbackWithSuccess:(RequestSuccessBlock)success error:(RequestErrorBlock)error;
++ (id)blockWithSuccess:(RequestSuccessBlock)success error:(RequestErrorBlock)error;
 @end
 
 @interface EGODatabaseRequestBlock : OperationCallback <EGODatabaseRequestBlock>

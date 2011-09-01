@@ -15,7 +15,7 @@
 @synthesize successBlock = _successBlock;
 @synthesize errorBlock = _errorBlock;
 
-+ (id)callbackWithSuccess:(id)success error:(id)error {
++ (id)blockWithSuccess:(id)success error:(id)error {
 	id callback = [[[self alloc] init] autorelease];
 	[callback setSuccessBlock:success];
 	[callback setErrorBlock:error];

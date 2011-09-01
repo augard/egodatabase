@@ -50,8 +50,8 @@
 	return self;
 }
 - (void)fire {
-	if(self.delegate == nil){
-		EGODBDebugLog(@"[EGODatabase] FATAL: please specify the callback delegate");
+	if(self.delegate == nil && self.block == nil){
+		EGODBDebugLog(@"[EGODatabase] FATAL: please specify the callback delegate or block");
 		return;
 	}
 	if(self.database == nil){
