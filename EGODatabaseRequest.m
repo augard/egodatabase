@@ -36,6 +36,16 @@
 @implementation EGODatabaseRequest
 @synthesize requestKind, database, delegate, block, tag;
 
+static dispatch_queue_t get_sqlite_io_queue() {
+    static dispatch_queue_t _diskIOQueue;
+    static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		_diskIOQueue = dispatch_queue_create("sqlite.io", NULL);
+	});
+	return _diskIOQueue;
+}
+
+
 - (id)initWithQuery:(NSString*)aQuery {
 	return [self initWithQuery:aQuery parameters:nil];
 }
@@ -61,6 +71,13 @@
 
 	[self main];
 }
+
+- (void)dispatchAsync {    
+    dispatch_async(get_sqlite_io_queue(), ^{        
+        [self main];
+    });
+}
+
 - (void)main {
 	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
 	[delegate retain];

@@ -52,6 +52,8 @@ typedef enum {
 - (id)initWithQuery:(NSString*)aQuery;
 - (id)initWithQuery:(NSString*)aQuery parameters:(NSArray*)someParameters;
 - (void)fire;
+- (void)dispatchAsync;
+
 
 @property(nonatomic,assign) NSInteger tag;
 @property(nonatomic,retain) EGODatabase* database;
