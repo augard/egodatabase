@@ -52,16 +52,9 @@
 	return rows.count;
 }
 
-- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len {
-	return [rows countByEnumeratingWithState:state objects:stackbuf count:len];
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len {
+	return [rows countByEnumeratingWithState:state objects:buffer count:len];
 }
 
-- (void)dealloc {
-	[rows release];
-	[errorMessage release];
-	[columnNames release];
-	[columnTypes release];
-	[super dealloc];
-}
 
 @end

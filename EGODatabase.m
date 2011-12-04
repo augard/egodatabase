@@ -67,12 +67,12 @@ valistArray;\
 @synthesize sqliteHandle=handle;
 
 + (id)databaseWithPath:(NSString*)aPath {
-	return [[[[self class] alloc] initWithPath:aPath] autorelease];
+	return [[[self class] alloc] initWithPath:aPath];
 }
 
 - (id)initWithPath:(NSString*)aPath {
 	if((self = [super init])) {
-		databasePath = [aPath retain];
+		databasePath = aPath;
 		executeLock = [[NSLock alloc] init];
 	}
 	
@@ -88,7 +88,7 @@ valistArray;\
 }
 
 - (EGODatabaseRequest*)requestWithQuery:(NSString*)sql parameters:(NSArray*)parameters {
-	EGODatabaseRequest* request = [[[EGODatabaseRequest alloc] initWithQuery:sql parameters:parameters] autorelease];
+	EGODatabaseRequest* request = [[EGODatabaseRequest alloc] initWithQuery:sql parameters:parameters];
 
 	request.database = self;
 	request.requestKind = EGODatabaseSelectRequest;
@@ -107,7 +107,7 @@ valistArray;\
 }
 
 - (EGODatabaseRequest*)requestWithUpdate:(NSString*)sql parameters:(NSArray*)parameters {
-	EGODatabaseRequest* request = [[[EGODatabaseRequest alloc] initWithQuery:sql parameters:parameters] autorelease];
+	EGODatabaseRequest* request = [[EGODatabaseRequest alloc] initWithQuery:sql parameters:parameters];
 
 	request.database = self;
 	request.requestKind = EGODatabaseUpdateRequest;
@@ -234,7 +234,7 @@ valistArray;\
 	[executeLock lock];
 	EGODBLockLog(@"[Query] Got Lock (%@)", [sql md5]);
 	
-	EGODatabaseResult* result = [[[EGODatabaseResult alloc] init] autorelease];
+	EGODatabaseResult* result = [[EGODatabaseResult alloc] init];
 
 	if(![self open]) {
 		EGODBLockLog(@"%@ released lock", [sql md5]);
@@ -294,14 +294,13 @@ valistArray;\
 				[row.columnData addObject:[NSData dataWithBytes:sqlite3_column_blob(statement,x)
 														 length:sqlite3_column_bytes(statement,x)]];
 			} else if (sqlite3_column_text(statement,x) != NULL) {
-				[row.columnData addObject:[[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement,x)] autorelease]];
+				[row.columnData addObject:[[NSString alloc] initWithUTF8String:(char *)sqlite3_column_text(statement,x)]];
 			} else {
 				[row.columnData addObject:@""];
 			}
 		}
 		
 		[result addRow:row];
-		[row release];
 	}
 	
 	sqlite3_finalize(statement);
@@ -410,9 +409,6 @@ valistArray;\
 
 - (void)dealloc {
 	[self close];
-	[executeLock release];
-	[databasePath release];
-	[super dealloc];
 }
 
 @end
