@@ -63,7 +63,6 @@
 }
 - (void)main {
 	@autoreleasepool {
-		
 		if(self.requestKind == EGODatabaseUpdateRequest) {
 			BOOL result = [self.database executeUpdate:query parameters:parameters];
 			
@@ -102,7 +101,6 @@
 				[self didFailWithError:error];
 			}
 		}
-		
 	}
 }
 
