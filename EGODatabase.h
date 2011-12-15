@@ -106,8 +106,8 @@
 - (BOOL)hadError;
 - (int)lastErrorCode;
 
-
-
+// Geospatial functions
+-(void)createDistanceFunc;
 
 
 
