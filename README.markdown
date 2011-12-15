@@ -84,6 +84,17 @@ Check out each header file for a complete listing of each method.
 	[request release];
 
 
+#blocks
+    EGODatabaseRequest* request = [[[EGODatabaseRequest alloc] initWithQuery:query] autorelease];
+    request.block = [EGODatabaseRequestBlock blockWithSuccess:^(EGODatabaseResult *result) {
+        // Success code
+    } error:^(NSError *error) {
+        // Error code
+    }];
+    request.database = appDelegate.database;
+
+    // Use this method instead add to operation queue. GCD is double faster fo sqlite than NSOperationQueue
+    [request dispatchAsync];
 
 #transaction helper methods
 
