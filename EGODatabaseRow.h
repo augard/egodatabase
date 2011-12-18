@@ -30,7 +30,7 @@
 @interface EGODatabaseRow : NSObject {
 @private
 	NSMutableArray* columnData;
-	EGODatabaseResult* result;
+	EGODatabaseResult* __unsafe_unretained result;
 }
 
 - (id)initWithDatabaseResult:(EGODatabaseResult*)aResult;
@@ -56,5 +56,5 @@
 - (NSDate*)dateForColumn:(NSString*)columnName;
 - (NSDate*)dateForColumnIndex:(int)columnIdx;
 
-@property(readonly) NSMutableArray* columnData;
+@property(retain, readonly) NSMutableArray* columnData;
 @end

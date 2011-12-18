@@ -35,7 +35,6 @@
 	if((self = [super init])) {
 		columnData = [[NSMutableArray alloc] init];
 		result = aResult;
-		// result = [aResult retain];
 	}
 	
 	return self;

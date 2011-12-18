@@ -58,7 +58,7 @@ valistArray;\
 
 
 
-@interface EGODatabase (Private)
+@interface EGODatabase ()
 - (BOOL)bindStatement:(sqlite3_stmt*)statement toParameters:(NSArray*)parameters;
 - (void)bindObject:(id)obj toColumn:(int)idx inStatement:(sqlite3_stmt*)pStmt;
 @end
