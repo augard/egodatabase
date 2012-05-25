@@ -84,6 +84,17 @@ Check out each header file for a complete listing of each method.
 	[request release];
 
 
+#blocks
+    EGODatabaseRequest* request = [[[EGODatabaseRequest alloc] initWithQuery:query] autorelease];
+    request.block = [EGODatabaseRequestBlock blockWithSuccess:^(EGODatabaseResult *result) {
+        // Success code
+    } error:^(NSError *error) {
+        // Error code
+    }];
+    request.database = appDelegate.database;
+
+    // Use this method instead add to operation queue. GCD is double faster fo sqlite than NSOperationQueue
+    [request dispatchAsync];
 
 #transaction helper methods
 
@@ -115,7 +126,10 @@ or if need be you can
 	[GET_DB() executeQuery:@"SELECT * FROM CUSTOMERS"];
 	
 	
-	
+#sort by distance
+   Call this to enable 
+   [EGODatabase createDistanceFunc]:
+   SELECT * FROM Locations  WHERE(lat between %f AND %f)  AND long between %f AND %f ORDER BY DISTANCE(lat, long, %f, %f) 
 	
 #Frequently Encountered Problems
   [EGODatabase] Invalid bind cound for number of arguments.

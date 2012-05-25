@@ -30,6 +30,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "EGODatabaseRequestBlock.h"
 
 typedef enum {
 	EGODatabaseUpdateRequest,
@@ -51,11 +52,14 @@ typedef enum {
 - (id)initWithQuery:(NSString*)aQuery;
 - (id)initWithQuery:(NSString*)aQuery parameters:(NSArray*)someParameters;
 - (void)fire;
+- (void)dispatchAsync;
+
 
 @property(nonatomic,assign) NSInteger tag;
 @property(nonatomic,strong) EGODatabase* database;
 @property(nonatomic,assign) EGODatabaseRequestKind requestKind;
 @property(nonatomic,unsafe_unretained) id<EGODatabaseRequestDelegate> delegate;
+@property(nonatomic,strong) EGODatabaseRequestBlock* block;
 @end
 
 @protocol EGODatabaseRequestDelegate<NSObject>
