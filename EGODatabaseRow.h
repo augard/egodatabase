@@ -30,7 +30,7 @@
 @interface EGODatabaseRow : NSObject {
 @private
 	NSMutableArray* columnData;
-	EGODatabaseResult* __unsafe_unretained result;
+	EGODatabaseResult* __weak result;
 }
 
 - (id)initWithDatabaseResult:(EGODatabaseResult*)aResult;
