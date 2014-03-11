@@ -36,25 +36,25 @@
 - (id)initWithDatabaseResult:(EGODatabaseResult*)aResult;
 
 - (int)intForColumn:(NSString*)columnName;
-- (int)intForColumnIndex:(int)columnIdx;
+- (int)intForColumnIndex:(NSInteger)columnIdx;
 
 - (long)longForColumn:(NSString*)columnName;
-- (long)longForColumnIndex:(int)columnIdx;
+- (long)longForColumnIndex:(NSInteger)columnIdx;
 
 - (BOOL)boolForColumn:(NSString*)columnName;
-- (BOOL)boolForColumnIndex:(int)columnIdx;
+- (BOOL)boolForColumnIndex:(NSInteger)columnIdx;
 
 - (double)doubleForColumn:(NSString*)columnName;
-- (double)doubleForColumnIndex:(int)columnIdx;
+- (double)doubleForColumnIndex:(NSInteger)columnIdx;
 
 - (NSString*)stringForColumn:(NSString*)columnName;
 - (NSString*)stringForColumnIndex:(int)columnIdx;
 
 - (NSData*)dataForColumn:(NSString*)columnName;
-- (NSData*)dataForColumnIndex:(int)columnIndex;
+- (NSData*)dataForColumnIndex:(NSInteger)columnIndex;
 
 - (NSDate*)dateForColumn:(NSString*)columnName;
-- (NSDate*)dateForColumnIndex:(int)columnIdx;
+- (NSDate*)dateForColumnIndex:(NSInteger)columnIdx;
 
 @property(retain, readonly) NSMutableArray* columnData;
 @end

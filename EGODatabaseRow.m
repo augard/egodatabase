@@ -40,27 +40,27 @@
 	return self;
 }
 
-- (int)columnIndexForName:(NSString*)columnName {
+- (NSInteger)columnIndexForName:(NSString*)columnName {
 	return [result.columnNames indexOfObject:columnName];
 }
 
 - (int)intForColumn:(NSString*)columnName {
-    int columnIndex = [self columnIndexForName:columnName];
+    NSInteger columnIndex = [self columnIndexForName:columnName];
 	if(columnIndex < 0 || columnIndex == NSNotFound) return 0;
     return [[columnData objectAtIndex:columnIndex] intValue];
 }
 
-- (int)intForColumnIndex:(int)columnIndex {
+- (int)intForColumnIndex:(NSInteger)columnIndex {
     return [[columnData objectAtIndex:columnIndex] intValue];
 }
 
 - (long)longForColumn:(NSString*)columnName {
-    int columnIndex = [self columnIndexForName:columnName];
+    NSInteger columnIndex = [self columnIndexForName:columnName];
 	if(columnIndex < 0 || columnIndex == NSNotFound) return 0;
     return (long)[[columnData objectAtIndex:columnIndex] longLongValue];
 }
 
-- (long)longForColumnIndex:(int)columnIndex {
+- (long)longForColumnIndex:(NSInteger)columnIndex {
     return (long)[[columnData objectAtIndex:columnIndex] longLongValue];
 }
 
@@ -68,22 +68,22 @@
     return ([self intForColumn:columnName] != 0);
 }
 
-- (BOOL)boolForColumnIndex:(int)columnIndex {
+- (BOOL)boolForColumnIndex:(NSInteger)columnIndex {
     return ([self intForColumnIndex:columnIndex] != 0);
 }
 
 - (double)doubleForColumn:(NSString*)columnName {
-    int columnIndex = [self columnIndexForName:columnName];
+    NSInteger columnIndex = [self columnIndexForName:columnName];
 	if(columnIndex < 0 || columnIndex == NSNotFound) return 0;
     return [[columnData objectAtIndex:columnIndex] doubleValue];
 }
 
-- (double)doubleForColumnIndex:(int)columnIndex {
+- (double)doubleForColumnIndex:(NSInteger)columnIndex {
     return [[columnData objectAtIndex:columnIndex] doubleValue];
 }
 
 - (NSString*) stringForColumn:(NSString*)columnName {
-    int columnIndex = [self columnIndexForName:columnName];
+    NSInteger columnIndex = [self columnIndexForName:columnName];
 	if(columnIndex < 0 || columnIndex == NSNotFound) return @"";
     return [columnData objectAtIndex:columnIndex];
 }
@@ -93,22 +93,22 @@
 }
 
 - (NSData*)dataForColumn:(NSString*)columnName {
-	int columnIndex = [self columnIndexForName:columnName];
+	NSInteger columnIndex = [self columnIndexForName:columnName];
 	if (columnIndex < 0 || columnIndex == NSNotFound) return nil;
 	return [columnData objectAtIndex:columnIndex];
 }
 
-- (NSData*)dataForColumnIndex:(int)columnIndex {
+- (NSData*)dataForColumnIndex:(NSInteger)columnIndex {
 	return [columnData objectAtIndex:columnIndex];
 }
 
 - (NSDate*)dateForColumn:(NSString*)columnName {
-    int columnIndex = [self columnIndexForName:columnName];
+    NSInteger columnIndex = [self columnIndexForName:columnName];
     if(columnIndex == -1) return nil;
     return [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIndex]];
 }
 
-- (NSDate*)dateForColumnIndex:(int)columnIndex {
+- (NSDate*)dateForColumnIndex:(NSInteger)columnIndex {
     return [NSDate dateWithTimeIntervalSince1970:[self doubleForColumnIndex:columnIndex]];
 }
 

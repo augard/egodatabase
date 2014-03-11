@@ -385,7 +385,7 @@ valistArray;\
 	if ((!obj) || ((NSNull *)obj == [NSNull null])) {
 		sqlite3_bind_null(pStmt, idx);
 	} else if ([obj isKindOfClass:[NSData class]]) {
-		sqlite3_bind_blob(pStmt, idx, [obj bytes], [obj length], SQLITE_STATIC);
+		sqlite3_bind_blob(pStmt, idx, [obj bytes], (int)[obj length], SQLITE_STATIC);
 	} else if ([obj isKindOfClass:[NSDate class]]) {
 		sqlite3_bind_double(pStmt, idx, [obj timeIntervalSince1970]);
 	} else if ([obj isKindOfClass:[NSNumber class]]) {
